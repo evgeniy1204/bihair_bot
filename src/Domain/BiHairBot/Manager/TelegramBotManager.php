@@ -4,6 +4,7 @@ namespace App\Domain\BiHairBot\Manager;
 use App\Domain\BiHairBot\MessageBuilder\MessageBuilderInterface;
 use App\Domain\BiHairBot\MessageDto;
 use App\Service\Telegram\TelegramApiClient;
+use App\Service\Telegram\UpdateHandler;
 use LogicException;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
@@ -14,15 +15,17 @@ readonly class TelegramBotManager
      */
     public function __construct(
         #[TaggedIterator(tag: MessageBuilderInterface::TAG)] private iterable $messageBuilders,
+        private UpdateHandler $updateHandler,
         private TelegramApiClient $telegramApiClient
     ) {
     }
 
     public function handle()
     {
-        //get updates
-        //get chat id and callback data
-        // sendMessage()
+        $arr = $this->updateHandler->handle();
+        foreach ($arr as $a){
+            echo $a->getText();
+        }
     }
 
     /**

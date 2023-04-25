@@ -23,6 +23,9 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     telegram:
-        class: App\Telegram
+        class: App\Service\Telegram\TelegramApiClient
+
+    guzzle.client:
+        class: GuzzleHttp\Client
         arguments:
-            - '%env(BOT_TOKEN)%default_value'
+            - {base_uri: 'https://api.telegram.org/bot%env(BOT_TOKEN)%/'}
