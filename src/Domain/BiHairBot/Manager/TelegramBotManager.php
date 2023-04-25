@@ -4,6 +4,7 @@ namespace App\Domain\BiHairBot\Manager;
 use App\Domain\BiHairBot\MessageBuilder\MessageBuilderInterface;
 use App\Domain\BiHairBot\MessageDto;
 use App\Service\Telegram\TelegramApiClient;
+use App\Service\Telegram\UpdateHandler;
 use LogicException;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
@@ -14,15 +15,20 @@ readonly class TelegramBotManager
      */
     public function __construct(
         #[TaggedIterator(tag: MessageBuilderInterface::TAG)] private iterable $messageBuilders,
+        private UpdateHandler $updateHandler,
         private TelegramApiClient $telegramApiClient
     ) {
     }
 
-    public function handle()
+    /**
+     * @return void
+     */
+    public function handle(): void
     {
-        //get updates
-        //get chat id and callback data
-        // sendMessage()
+        $arr = $this->updateHandler->handle();
+        foreach ($arr as $a){
+            $this->sendMessage($a->getUserId(), $a->getText());
+        }
     }
 
     /**
@@ -33,7 +39,10 @@ readonly class TelegramBotManager
      */
     public function sendMessage(string $chantId, string $type): void
     {
-        $message = $this->getMessageBuilder($type)->build();
+        $message = $this->getMessageBuilder($type)?->build();
+        if(!$message){
+            return;
+        }
 
         $this->telegramApiClient->sendMessage($chantId, $message);
     }
@@ -41,16 +50,16 @@ readonly class TelegramBotManager
     /**
      * @param string $type
      *
-     * @return MessageBuilderInterface
+     * @return MessageBuilderInterface|null
      */
-    private function getMessageBuilder(string $type): MessageBuilderInterface
+    private function getMessageBuilder(string $type): ?MessageBuilderInterface
     {
         foreach ($this->messageBuilders as $builder) {
             if ($builder->supports($type)) {
                 return $builder;
             }
         }
-
-        throw new LogicException('Unsupported message builder type');
+        return null;
+//        throw new LogicException('Unsupported message builder type');
     }
 }
