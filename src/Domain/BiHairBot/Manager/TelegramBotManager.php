@@ -24,7 +24,7 @@ readonly class TelegramBotManager
     {
         $arr = $this->updateHandler->handle();
         foreach ($arr as $a){
-            echo $a->getText();
+            $this->sendMessage($a->getUserId(), $a->getText());
         }
     }
 
@@ -36,7 +36,10 @@ readonly class TelegramBotManager
      */
     public function sendMessage(string $chantId, string $type): void
     {
-        $message = $this->getMessageBuilder($type)->build();
+        $message = $this->getMessageBuilder($type)?->build();
+        if(!$message){
+            return;
+        }
 
         $this->telegramApiClient->sendMessage($chantId, $message);
     }
@@ -44,16 +47,16 @@ readonly class TelegramBotManager
     /**
      * @param string $type
      *
-     * @return MessageBuilderInterface
+     * @return MessageBuilderInterface|null
      */
-    private function getMessageBuilder(string $type): MessageBuilderInterface
+    private function getMessageBuilder(string $type): ?MessageBuilderInterface
     {
         foreach ($this->messageBuilders as $builder) {
             if ($builder->supports($type)) {
                 return $builder;
             }
         }
-
-        throw new LogicException('Unsupported message builder type');
+        return null;
+//        throw new LogicException('Unsupported message builder type');
     }
 }
