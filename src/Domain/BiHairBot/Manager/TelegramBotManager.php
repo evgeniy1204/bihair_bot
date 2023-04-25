@@ -20,7 +20,10 @@ readonly class TelegramBotManager
     ) {
     }
 
-    public function handle()
+    /**
+     * @return void
+     */
+    public function handle(): void
     {
         $arr = $this->updateHandler->handle();
         foreach ($arr as $a){

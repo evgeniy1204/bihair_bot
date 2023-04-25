@@ -12,6 +12,9 @@ class UpdateHandler
 
     private array $UpdatesDto;
 
+    /**
+     * @param TelegramApiClient $telegram
+     */
     public function __construct
     (
         #[Autowire(service: 'telegram')]
@@ -19,14 +22,21 @@ class UpdateHandler
     ) {
     }
 
-    public function handle()
+    /**
+     * @return array
+     */
+    public function handle() : array
     {
         $updates = json_decode($this->telegram->getUpdates(), true)['result'];
         $this->processUpdates($updates);
         return $this->UpdatesDto;
     }
 
-    private function processUpdates(array $updates)
+    /**
+     * @param array $updates
+     * @return void
+     */
+    private function processUpdates(array $updates) : void
     {
         foreach ($updates as $update) {
             if (!array_intersect(array_keys($update), self::SUPPORTED_TYPES)) {
@@ -36,7 +46,11 @@ class UpdateHandler
         }
     }
 
-    private function processUpdate(array $update)
+    /**
+     * @param array $update
+     * @return UpdateDto
+     */
+    private function processUpdate(array $update) : UpdateDto
     {
         $updateId = $update['update_id'];
         $userId = $update['message']['from']['id'];
