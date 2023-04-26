@@ -11,6 +11,7 @@ class StartMessageBuilder implements MessageBuilderInterface
 {
     private const HELLO_MESSAGE_TEXT = 'Привет! 👋🏻
 Жми "Курс" и скорее переходи смотреть мой бесплатный пробный урок 💇🏻‍♀️';
+
     /**
      * @param string $chantId
      *
