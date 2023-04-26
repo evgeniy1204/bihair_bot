@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Domain\BiHairBot\MessageBuilder;
+namespace App\Service\Telegram;
 
-use App\Domain\BiHairBot\MessageDto;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag(name: self::TAG)]
@@ -19,8 +18,9 @@ interface MessageBuilderInterface
 
     /**
      * @param string $type
+     * @param string $botName
      *
      * @return bool
      */
-    public function supports(string $type): bool;
+    public function supports(string $type, string $botName): bool;
 }

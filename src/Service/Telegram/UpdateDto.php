@@ -1,5 +1,5 @@
 <?php
-namespace App\Domain\BiHairBot;
+namespace App\Service\Telegram;
 
 readonly class UpdateDto
 {

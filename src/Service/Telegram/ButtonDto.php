@@ -1,5 +1,5 @@
 <?php
-namespace App\Domain\BiHairBot;
+namespace App\Service\Telegram;
 
 readonly class ButtonDto
 {
@@ -12,8 +12,7 @@ readonly class ButtonDto
         private string $text,
         private ?string $callbackData = null,
         private ?string $url = null,
-    )
-    {
+    ) {
     }
 
     /**

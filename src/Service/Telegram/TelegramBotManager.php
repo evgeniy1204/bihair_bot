@@ -1,17 +1,17 @@
 <?php
 namespace App\Service\Telegram;
 
-use App\Domain\BiHairBot\MessageBuilder\MessageBuilderInterface;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 readonly class TelegramBotManager
 {
     /**
      * @param MessageBuilderInterface[]|iterable $messageBuilders
+     * @param BotProviderInterface[]|iterable    $bots
      */
     public function __construct(
         #[TaggedIterator(tag: MessageBuilderInterface::TAG)] private iterable $messageBuilders,
-        private TelegramApiClient $telegramApiClient
+        #[TaggedIterator(tag: BotProviderInterface::BOT_PROVIDER)] private iterable $bots,
     ) {
     }
 
@@ -20,43 +20,35 @@ readonly class TelegramBotManager
      */
     public function handle(): void
     {
-        $lastUpdateId = null;
-        $updates = $this->telegramApiClient->getUpdates($lastUpdateId);
-        while ($updates) {
-            foreach ($updates as $update) {
-                $this->sendMessage($update->getChatId(), $update->getKey());
-                $lastUpdateId = $update->getUpdateId();
-            }
-            $updates = $this->telegramApiClient->getUpdates(++$lastUpdateId);
-        }
-
-    }
-
-    /**
-     * @param string $chantId
-     * @param string $type
-     *
-     * @return void
-     */
-    public function sendMessage(string $chantId, string $type): void
-    {
-        $messages = $this->getMessageBuilder($type)?->build($chantId);
-        if ($messages) {
-            foreach ($messages as $message) {
-                $this->telegramApiClient->sendMessage($message);
+        foreach ($this->bots as $bot) {
+            $telegramBotClient = new TelegramApiClient($bot->getToken());
+            $lastUpdateId = null;
+            $updates = $telegramBotClient->getUpdates($lastUpdateId);
+            while ($updates) {
+                foreach ($updates as $update) {
+                    $messages = $this->getMessageBuilder($update->getKey(), $bot->getName())?->build($update->getChatId());
+                    if ($messages) {
+                        foreach ($messages as $message) {
+                            $telegramBotClient->sendMessage($message);
+                        }
+                    }
+                    $lastUpdateId = $update->getUpdateId();
+                }
+                $updates = $telegramBotClient->getUpdates(++$lastUpdateId);
             }
         }
     }
 
     /**
      * @param string $type
+     * @param string $botName
      *
      * @return MessageBuilderInterface|null
      */
-    private function getMessageBuilder(string $type): ?MessageBuilderInterface
+    private function getMessageBuilder(string $type, string $botName): ?MessageBuilderInterface
     {
         foreach ($this->messageBuilders as $builder) {
-            if ($builder->supports($type)) {
+            if ($builder->supports($type, $botName)) {
                 return $builder;
             }
         }

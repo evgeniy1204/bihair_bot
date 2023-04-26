@@ -1,10 +1,7 @@
 <?php
 namespace App\Service\Telegram;
 
-use App\Domain\BiHairBot\MessageDto;
-use App\Domain\BiHairBot\UpdateDto;
 use GuzzleHttp\Client;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class TelegramApiClient
 {
@@ -15,16 +12,11 @@ class TelegramApiClient
      */
     private Client $client;
 
-    private string $token;
-
     /**
      * @param string $token
      */
-    public function __construct(
-        #[Autowire('%env(TG_BIHAIR_BOT_TOKEN)%')]
-        string $token,
-    ) {
-        $this->token = $token;
+    public function __construct(private readonly string $token)
+    {
         $this->client = new Client();
     }
 

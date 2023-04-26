@@ -2,8 +2,10 @@
 namespace App\Domain\BiHairBot\MessageBuilder;
 
 use App\Domain\BiHairBot\BiHairBotEvents;
-use App\Domain\BiHairBot\ButtonDto;
-use App\Domain\BiHairBot\MessageDto;
+use App\Domain\BiHairBot\BiHairBotProvider;
+use App\Service\Telegram\ButtonDto;
+use App\Service\Telegram\MessageBuilderInterface;
+use App\Service\Telegram\MessageDto;
 
 class CourseMessageBuilder implements MessageBuilderInterface
 {
@@ -41,11 +43,12 @@ class CourseMessageBuilder implements MessageBuilderInterface
 
     /**
      * @param string $type
+     * @param string $botName
      *
      * @return bool
      */
-    public function supports(string $type): bool
+    public function supports(string $type, string $botName): bool
     {
-        return $type === BiHairBotEvents::COURSE;
+        return $type === BiHairBotEvents::COURSE && $botName === BiHairBotProvider::BOT_NAME;
     }
 }
