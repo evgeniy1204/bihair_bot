@@ -29,7 +29,9 @@ class BiHairBotHandleTelegramCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->telegramBotManager->handle();
+        while (true) {
+            $this->telegramBotManager->handle();
+        }
 
         return Command::SUCCESS;
     }
