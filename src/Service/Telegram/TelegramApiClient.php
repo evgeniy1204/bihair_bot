@@ -73,20 +73,7 @@ class TelegramApiClient
         $results = $updates['result'];
         $updatesDto = [];
         foreach ($results as $result) {
-            $callbackData = null;
-            if ($result['callback_query'] ?? null) {
-                $callbackData = $result['callback_query']['data'];
-                $updatesDto[] = new UpdateDto($result['update_id'], $result['callback_query']['message']['chat']['id'], $callbackData);
-
-                continue;
-            }
-            $chatId = $result['message']['chat']['id'] ?? null;
-            $key = $callbackData ?? $result['message']['text'] ?? null;
-            $id = $result['update_id'] ?? null;
-
-            if ($id && $chatId && $key) {
-                $updatesDto[] = new UpdateDto($id, $chatId, $key);
-            }
+            $updatesDto[] = $this->processUpdate($result);
         }
 
         return $updatesDto;
@@ -98,5 +85,25 @@ class TelegramApiClient
     private function getUri(): string
     {
         return sprintf('%s%s', self::TELEGRAM_HOST, $this->token);
+    }
+
+    /**
+     * @param mixed $result
+     *
+     * @return UpdateDto
+     */
+    private function processUpdate(mixed $result): UpdateDto
+    {
+        $callbackData = null;
+        if ($result['callback_query'] ?? null) {
+            $callbackData = $result['callback_query']['data'];
+
+            return new UpdateDto($result['update_id'], $result['callback_query']['message']['chat']['id'], $callbackData);
+        }
+        $chatId = $result['message']['chat']['id'] ?? null;
+        $key = $callbackData ?? $result['message']['text'] ?? null;
+        $id = $result['update_id'] ?? null;
+
+        return new UpdateDto($id, $chatId, $key);
     }
 }
