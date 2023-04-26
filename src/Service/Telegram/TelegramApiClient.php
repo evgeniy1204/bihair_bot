@@ -2,6 +2,7 @@
 namespace App\Service\Telegram;
 
 use GuzzleHttp\Client;
+use LogicException;
 
 class TelegramApiClient
 {
@@ -88,11 +89,11 @@ class TelegramApiClient
     }
 
     /**
-     * @param mixed $result
+     * @param array $result
      *
      * @return UpdateDto
      */
-    private function processUpdate(mixed $result): UpdateDto
+    private function processUpdate(array $result): UpdateDto
     {
         $callbackData = null;
         if ($result['callback_query'] ?? null) {
@@ -104,6 +105,9 @@ class TelegramApiClient
         $key = $callbackData ?? $result['message']['text'] ?? null;
         $id = $result['update_id'] ?? null;
 
-        return new UpdateDto($id, $chatId, $key);
+        if ($id && $chatId && $key) {
+            return new UpdateDto($id, $chatId, $key);
+        }
+        throw new LogicException();
     }
 }
