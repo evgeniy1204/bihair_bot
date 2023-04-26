@@ -11,14 +11,14 @@ class ContactsMessageBuilder implements MessageBuilderInterface
 {
     private const MESSAGE_TEXT = 'Мои соц. сети:';
     /**
-     * @param string $chantId
+     * @param string $chatId
      *
      * @return MessageDto[]|\Generator
      */
-    public function build(string $chantId): \Generator
+    public function build(string $chatId): \Generator
     {
         yield new MessageDto(
-            $chantId,
+            $chatId,
             self::MESSAGE_TEXT, [
             new ButtonDto('Телеграм', url: 'https://t.me/bihair_sms'),
             new ButtonDto('Instagram', url: 'https://www.instagram.com/bihair__'),
