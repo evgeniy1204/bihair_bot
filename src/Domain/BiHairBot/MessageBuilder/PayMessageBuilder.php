@@ -9,17 +9,6 @@ use App\Service\Telegram\MessageDto;
 
 class PayMessageBuilder implements MessageBuilderInterface
 {
-    private const MESSAGE_TEXT = 'Оплатить курс можно двумя способами:
-ЕРИП: 
-ЕРИП → “Банковские, финансовые услуги” → “Банки и НКФО” → “Приорбанк” → “Пополнение счета” → BY10PJCB30140010095253346933
-
-Перевод на карту:
-4916989691008956
-NASTASSIA BILALOVA
-06/26
-
-Для записи на курс отправьте скрин чека в директ
-';
     /**
      * @param string $chatId
      *
@@ -29,7 +18,7 @@ NASTASSIA BILALOVA
     {
         yield new MessageDto(
             $chatId,
-            self::MESSAGE_TEXT,
+            $this->getMessageText(),
             [new ButtonDto('Директ Instagram', url: 'https://www.instagram.com/bihair__')]
         );
     }
@@ -43,5 +32,20 @@ NASTASSIA BILALOVA
     public function supports(string $type, string $botName): bool
     {
         return $type === BiHairBotEvents::PAY && $botName === BiHairBotProvider::BOT_NAME;
+    }
+
+    private function getMessageText() : string
+    {
+        return  'Оплатить курс можно двумя способами:
+ЕРИП: 
+ЕРИП → “Банковские, финансовые услуги” → “Банки и НКФО” → “Приорбанк” → “Пополнение счета” → BY10PJCB30140010095253346933
+
+Перевод на карту:
+4916989691008956
+NASTASSIA BILALOVA
+06/26
+
+Для записи на курс отправьте скрин чека в директ
+';
     }
 }

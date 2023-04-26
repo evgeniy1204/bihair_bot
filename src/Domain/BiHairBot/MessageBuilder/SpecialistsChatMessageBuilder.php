@@ -9,7 +9,6 @@ use App\Service\Telegram\MessageDto;
 
 class SpecialistsChatMessageBuilder implements MessageBuilderInterface
 {
-    private const MESSAGE_TEXT = 'Наш чат:';
     /**
      * @param string $chatId
      *
@@ -19,7 +18,7 @@ class SpecialistsChatMessageBuilder implements MessageBuilderInterface
     {
         yield new MessageDto(
             $chatId,
-            self::MESSAGE_TEXT,
+            $this->getMessageText(),
             [new ButtonDto('Курим, парим и хуярим', url: 'https://t.me/+0_uO4FSSSp8zZWVi')]
         );
     }
@@ -33,5 +32,13 @@ class SpecialistsChatMessageBuilder implements MessageBuilderInterface
     public function supports(string $type, string $botName): bool
     {
         return $type === BiHairBotEvents::SPECIALISTS_CHAT && $botName === BiHairBotProvider::BOT_NAME;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessageText() : string
+    {
+        return 'Наш чат:';
     }
 }

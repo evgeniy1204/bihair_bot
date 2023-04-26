@@ -9,7 +9,6 @@ use App\Service\Telegram\MessageDto;
 
 class ContactsMessageBuilder implements MessageBuilderInterface
 {
-    private const MESSAGE_TEXT = 'Мои соц. сети:';
     /**
      * @param string $chatId
      *
@@ -19,7 +18,7 @@ class ContactsMessageBuilder implements MessageBuilderInterface
     {
         yield new MessageDto(
             $chatId,
-            self::MESSAGE_TEXT, [
+            $this->getMessageText(), [
             new ButtonDto('Телеграм', url: 'https://t.me/bihair_sms'),
             new ButtonDto('Instagram', url: 'https://www.instagram.com/bihair__'),
             new ButtonDto('TikTok', url: 'https://www.tiktok.com/@bihair__'),
@@ -35,5 +34,13 @@ class ContactsMessageBuilder implements MessageBuilderInterface
     public function supports(string $type, string $botName): bool
     {
         return $type === BiHairBotEvents::CONTACTS && $botName === BiHairBotProvider::BOT_NAME;
+    }
+
+    /**
+     * @return string
+     */
+    private function getMessageText() : string
+    {
+        return 'Мои соц. сети:';
     }
 }
