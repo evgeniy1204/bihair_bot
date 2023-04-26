@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Service\Telegram;
 
 use GuzzleHttp\Client;
 use LogicException;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class TelegramApiClient
 {
@@ -16,7 +18,9 @@ class TelegramApiClient
     /**
      * @param string $token
      */
-    public function __construct(private readonly string $token)
+    public function __construct(
+        private readonly string $token,
+    )
     {
         $this->client = new Client();
     }
@@ -67,17 +71,7 @@ class TelegramApiClient
             throw new \LogicException($throwable->getMessage());
         }
 
-        $updates = json_decode($updates, true);
-        if (!$updates['ok']) {
-            return [];
-        }
-        $results = $updates['result'];
-        $updatesDto = [];
-        foreach ($results as $result) {
-            $updatesDto[] = $this->processUpdate($result);
-        }
-
-        return $updatesDto;
+        return updateHandler::processUpdates($updates);
     }
 
     /**
@@ -93,21 +87,5 @@ class TelegramApiClient
      *
      * @return UpdateDto
      */
-    private function processUpdate(array $result): UpdateDto
-    {
-        $callbackData = null;
-        if ($result['callback_query'] ?? null) {
-            $callbackData = $result['callback_query']['data'];
 
-            return new UpdateDto($result['update_id'], $result['callback_query']['message']['chat']['id'], $callbackData);
-        }
-        $chatId = $result['message']['chat']['id'] ?? null;
-        $key = $callbackData ?? $result['message']['text'] ?? null;
-        $id = $result['update_id'] ?? null;
-
-        if ($id && $chatId && $key) {
-            return new UpdateDto($id, $chatId, $key);
-        }
-        throw new LogicException();
-    }
 }
