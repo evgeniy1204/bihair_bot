@@ -22,13 +22,13 @@ class ServiceMessageBuilder implements MessageBuilderInterface
 💫 Кератин - процедура выпрямления завитков, кудрей, волнистых волос и формирования защитной пленки вокруг волоса для блеска, утяжеления и идеальной гладкости
 
 💫 Ботокс - процедура дисциплинирования волос, сглаживания пушистости для идеально гладких блестящих волос',
-            photoId: 'AgACAgQAAxkDAAPYZEjgCBsBqgryiQVbS44G3-1HKJEAApSvMRsVDE1SG-giPZ36he8BAAMCAANzAAMvBA'
+            photoId: 'AgACAgQAAxkDAAMMZEky0t0tjivXyb8kzBn8EcVEWcQAApSvMRsVDE1SRlyO0LIfb20BAAMCAANzAAMvBA'
         );
         yield new MessageDto(
             $chatId,
             'Холодное восстановление
 💫 Холодное восстановление нужно самым хрупким, ломким, обесцвеченным, поврежденным волосам. Без использования утюжка. Не имеет ярко выраженных визуальных эффектов',
-            photoId: 'AgACAgQAAxkDAAPXZEjf4C2S0Ej85xVbt14HOv7aGdAAAtSvMRtOKExSFLHfZKOzegIBAAMCAANzAAMvBA'
+            photoId: 'AgACAgQAAxkDAAMNZEky-rVZayT9D8bf1yfq6hA3qz8AAtSvMRtOKExSyN2348Dav1QBAAMCAANzAAMvBA'
         );
         yield new MessageDto(
             $chatId,
