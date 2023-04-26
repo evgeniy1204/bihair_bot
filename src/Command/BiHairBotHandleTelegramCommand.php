@@ -1,7 +1,7 @@
 <?php
 namespace App\Command;
 
-use App\Domain\BiHairBot\Manager\TelegramBotManager;
+use App\Service\Telegram\TelegramBotManager;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

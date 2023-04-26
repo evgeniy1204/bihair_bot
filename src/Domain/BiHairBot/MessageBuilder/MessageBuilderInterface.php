@@ -11,9 +11,11 @@ interface MessageBuilderInterface
     public const TAG = 'message.builder.tag';
 
     /**
-     * @return MessageDto
+     * @param string $chantId
+     *
+     * @return MessageDto[]|\Generator
      */
-    public function build(): MessageDto;
+    public function build(string $chantId): \Generator;
 
     /**
      * @param string $type

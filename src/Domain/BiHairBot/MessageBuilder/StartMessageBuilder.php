@@ -2,16 +2,29 @@
 namespace App\Domain\BiHairBot\MessageBuilder;
 
 use App\Domain\BiHairBot\BiHairBotEvents;
+use App\Domain\BiHairBot\ButtonDto;
 use App\Domain\BiHairBot\MessageDto;
 
 class StartMessageBuilder implements MessageBuilderInterface
 {
+    private const HELLO_MESSAGE_TEXT = 'Привет! 👋🏻
+Жми "Курс" и скорее переходи смотреть мой бесплатный пробный урок 💇🏻‍♀️';
     /**
-     * @return MessageDto
+     * @param string $chantId
+     *
+     * @return MessageDto[]|\Generator
      */
-    public function build(): MessageDto
+    public function build(string $chantId): \Generator
     {
-        return new MessageDto('hello');
+        yield new MessageDto(
+            $chantId,
+            self::HELLO_MESSAGE_TEXT,
+            keyboardButtons: [
+                new ButtonDto('💇‍♀️ Курс'),
+                new ButtonDto('💫 Услуги'),
+                new ButtonDto('📱 Мои соц. сети'),
+                new ButtonDto('💬 Чат для мастеров'),
+            ]);
     }
 
     /**
