@@ -21,14 +21,14 @@ NASTASSIA BILALOVA
 Для записи на курс отправьте скрин чека в директ
 ';
     /**
-     * @param string $chantId
+     * @param string $chatId
      *
      * @return MessageDto[]|\Generator
      */
-    public function build(string $chantId): \Generator
+    public function build(string $chatId): \Generator
     {
         yield new MessageDto(
-            $chantId,
+            $chatId,
             self::MESSAGE_TEXT,
             [new ButtonDto('Директ Instagram', url: 'https://www.instagram.com/bihair__')]
         );

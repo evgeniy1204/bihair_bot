@@ -25,14 +25,14 @@ class CourseMessageBuilder implements MessageBuilderInterface
 Всю актуальную информацию о стоимости курса можно узнать в канале с бесплатным пробным уроком. Переходи по ссылке!
 ';
     /**
-     * @param string $chantId
+     * @param string $chatId
      *
      * @return MessageDto[]|\Generator
      */
-    public function build(string $chantId): \Generator
+    public function build(string $chatId): \Generator
     {
         yield new MessageDto(
-            $chantId,
+            $chatId,
             self::MESSAGE_TEXT,
             [
                 new ButtonDto('Оплатить', 'pay'),

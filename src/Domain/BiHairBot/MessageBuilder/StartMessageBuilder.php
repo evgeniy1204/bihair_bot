@@ -13,14 +13,14 @@ class StartMessageBuilder implements MessageBuilderInterface
 Жми "Курс" и скорее переходи смотреть мой бесплатный пробный урок 💇🏻‍♀️';
 
     /**
-     * @param string $chantId
+     * @param string $chatId
      *
      * @return MessageDto[]|\Generator
      */
-    public function build(string $chantId): \Generator
+    public function build(string $chatId): \Generator
     {
         yield new MessageDto(
-            $chantId,
+            $chatId,
             self::HELLO_MESSAGE_TEXT,
             keyboardButtons: [
                 new ButtonDto('💇‍♀️ Курс'),

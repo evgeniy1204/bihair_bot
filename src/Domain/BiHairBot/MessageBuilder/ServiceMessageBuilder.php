@@ -10,14 +10,14 @@ use App\Service\Telegram\MessageDto;
 class ServiceMessageBuilder implements MessageBuilderInterface
 {
     /**
-     * @param string $chantId
+     * @param string $chatId
      *
      * @return \Generator|MessageDto[]
      */
-    public function build(string $chantId): \Generator
+    public function build(string $chatId): \Generator
     {
         yield new MessageDto(
-            $chantId,
+            $chatId,
             'Кератин 
 💫 Кератин - процедура выпрямления завитков, кудрей, волнистых волос и формирования защитной пленки вокруг волоса для блеска, утяжеления и идеальной гладкости
 
@@ -25,13 +25,13 @@ class ServiceMessageBuilder implements MessageBuilderInterface
             photoId: 'AgACAgQAAxkDAAPYZEjgCBsBqgryiQVbS44G3-1HKJEAApSvMRsVDE1SG-giPZ36he8BAAMCAANzAAMvBA'
         );
         yield new MessageDto(
-            $chantId,
+            $chatId,
             'Холодное восстановление
 💫 Холодное восстановление нужно самым хрупким, ломким, обесцвеченным, поврежденным волосам. Без использования утюжка. Не имеет ярко выраженных визуальных эффектов',
             photoId: 'AgACAgQAAxkDAAPXZEjf4C2S0Ej85xVbt14HOv7aGdAAAtSvMRtOKExSFLHfZKOzegIBAAMCAANzAAMvBA'
         );
         yield new MessageDto(
-            $chantId,
+            $chatId,
             'Трихология',
             [new ButtonDto('Подробноее о трихологии', url: 'https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MDUwOTY3Nzc1Mzk3NTc3?story_media_id=3057605334607647085&igshid=YmMyMTA2M2Y=')]
         );

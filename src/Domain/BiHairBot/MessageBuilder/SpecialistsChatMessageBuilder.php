@@ -11,14 +11,14 @@ class SpecialistsChatMessageBuilder implements MessageBuilderInterface
 {
     private const MESSAGE_TEXT = 'Наш чат:';
     /**
-     * @param string $chantId
+     * @param string $chatId
      *
      * @return MessageDto[]|\Generator
      */
-    public function build(string $chantId): \Generator
+    public function build(string $chatId): \Generator
     {
         yield new MessageDto(
-            $chantId,
+            $chatId,
             self::MESSAGE_TEXT,
             [new ButtonDto('Курим, парим и хуярим', url: 'https://t.me/+0_uO4FSSSp8zZWVi')]
         );
