@@ -9,6 +9,8 @@ use App\Service\Telegram\MessageDto;
 
 class ServiceMessageBuilder implements MessageBuilderInterface
 {
+    private const EVENT = '💫 Услуги';
+
     /**
      * @param string $chatId
      *
@@ -45,6 +47,6 @@ class ServiceMessageBuilder implements MessageBuilderInterface
      */
     public function supports(string $type, string $botName): bool
     {
-        return $type === BiHairBotEvents::SERVICE && $botName === BiHairBotProvider::BOT_NAME;
+        return $type === self::EVENT && $botName === BiHairBotProvider::BOT_NAME;
     }
 }

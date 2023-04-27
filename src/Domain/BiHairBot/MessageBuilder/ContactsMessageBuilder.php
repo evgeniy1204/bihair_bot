@@ -9,7 +9,11 @@ use App\Service\Telegram\MessageDto;
 
 class ContactsMessageBuilder implements MessageBuilderInterface
 {
+
+    private const EVENT = '📱 Мои соц. сети';
+
     private const MESSAGE_TEXT = 'Мои соц. сети:';
+
     /**
      * @param string $chatId
      *
@@ -34,6 +38,6 @@ class ContactsMessageBuilder implements MessageBuilderInterface
      */
     public function supports(string $type, string $botName): bool
     {
-        return $type === BiHairBotEvents::CONTACTS && $botName === BiHairBotProvider::BOT_NAME;
+        return $type === self::EVENT && $botName === BiHairBotProvider::BOT_NAME;
     }
 }

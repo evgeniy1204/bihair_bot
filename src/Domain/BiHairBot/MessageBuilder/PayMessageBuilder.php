@@ -9,6 +9,8 @@ use App\Service\Telegram\MessageDto;
 
 class PayMessageBuilder implements MessageBuilderInterface
 {
+    private const EVENT = '/pay';
+
     private const MESSAGE_TEXT = 'Оплатить курс можно двумя способами:
 ЕРИП: 
 ЕРИП → “Банковские, финансовые услуги” → “Банки и НКФО” → “Приорбанк” → “Пополнение счета” → BY10PJCB30140010095253346933
@@ -42,6 +44,6 @@ NASTASSIA BILALOVA
      */
     public function supports(string $type, string $botName): bool
     {
-        return $type === BiHairBotEvents::PAY && $botName === BiHairBotProvider::BOT_NAME;
+        return $type === self::EVENT && $botName === BiHairBotProvider::BOT_NAME;
     }
 }

@@ -9,6 +9,9 @@ use App\Service\Telegram\MessageDto;
 
 class CourseMessageBuilder implements MessageBuilderInterface
 {
+
+    private const EVENT = '💇‍♀️ Курс';
+
     private const MESSAGE_TEXT = 'На курсе только самая нужная и работающая, информация по уходу за волосами и кожей головы. 
 Один курс - полное понимание что делать с волосами в любой ситуации: 
 ✅ Никакого тупняка в магазине перед полками - сразу видите работающие банки.
@@ -49,6 +52,6 @@ class CourseMessageBuilder implements MessageBuilderInterface
      */
     public function supports(string $type, string $botName): bool
     {
-        return $type === BiHairBotEvents::COURSE && $botName === BiHairBotProvider::BOT_NAME;
+        return $type === self::EVENT && $botName === BiHairBotProvider::BOT_NAME;
     }
 }

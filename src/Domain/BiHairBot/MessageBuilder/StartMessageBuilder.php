@@ -9,6 +9,9 @@ use App\Service\Telegram\MessageDto;
 
 class StartMessageBuilder implements MessageBuilderInterface
 {
+
+    private const EVENT = '/start';
+
     private const HELLO_MESSAGE_TEXT = 'Привет! 👋🏻
 Жми "Курс" и скорее переходи смотреть мой бесплатный пробный урок 💇🏻‍♀️';
 
@@ -38,6 +41,6 @@ class StartMessageBuilder implements MessageBuilderInterface
      */
     public function supports(string $type, string $botName): bool
     {
-        return $type === BiHairBotEvents::START && $botName === BiHairBotProvider::BOT_NAME;
+        return $type === self::EVENT && $botName === BiHairBotProvider::BOT_NAME;
     }
 }
