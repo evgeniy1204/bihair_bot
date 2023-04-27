@@ -74,7 +74,9 @@ class TelegramApiClient
         $results = $updates['result'];
         $updatesDto = [];
         foreach ($results as $result) {
-            $updatesDto[] = $this->processUpdate($result);
+            if ($update = $this->processUpdate($result)) {
+                $updatesDto[] = $update;
+            }
         }
 
         return $updatesDto;
@@ -91,9 +93,9 @@ class TelegramApiClient
     /**
      * @param array $result
      *
-     * @return UpdateDto
+     * @return UpdateDto|null
      */
-    private function processUpdate(array $result): UpdateDto
+    private function processUpdate(array $result): ?UpdateDto
     {
         $callbackData = null;
         if ($result['callback_query'] ?? null) {
@@ -108,6 +110,7 @@ class TelegramApiClient
         if ($id && $chatId && $key) {
             return new UpdateDto($id, $chatId, $key);
         }
-        throw new LogicException();
+
+        return null;
     }
 }
