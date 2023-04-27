@@ -2,7 +2,6 @@
 namespace App\Service\Telegram;
 
 use GuzzleHttp\Client;
-use LogicException;
 
 class TelegramApiClient
 {
@@ -48,40 +47,6 @@ class TelegramApiClient
             throw new \LogicException($throwable->getMessage());
         }
     }
-
-    /**
-     * @param int|null $offset
-     *
-     * @return UpdateDto[]
-     */
-    public function getUpdates(?int $offset): array
-    {
-        try {
-            $updates = $this->client->get($this->getUri() . DIRECTORY_SEPARATOR . 'getUpdates', [
-                'query' => [
-                    'offset' => $offset,
-                    'allowed_updates' => ['message', 'callback_query'],
-                ],
-            ])->getBody()->getContents();
-        } catch (\Throwable $throwable) {
-            throw new \LogicException($throwable->getMessage());
-        }
-
-        $updates = json_decode($updates, true);
-        if (!$updates['ok']) {
-            return [];
-        }
-        $results = $updates['result'];
-        $updatesDto = [];
-        foreach ($results as $result) {
-            if ($update = $this->processUpdate($result)) {
-                $updatesDto[] = $update;
-            }
-        }
-
-        return $updatesDto;
-    }
-
     /**
      * @return string
      */

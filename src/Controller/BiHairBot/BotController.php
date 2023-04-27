@@ -28,6 +28,6 @@ class BotController extends AbstractController
             return new Response('Bad Request', 400);
         }
         $this->telegramBotManager->handle($update);
-        return new Response($update, 200);
+        return new Response('OK', 200);
     }
 }
