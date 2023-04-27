@@ -9,7 +9,7 @@ use App\Service\Telegram\MessageDto;
 
 class PayMessageBuilder implements MessageBuilderInterface
 {
-    private const EVENT = '/pay';
+    public const EVENT = '/pay';
 
     private const MESSAGE_TEXT = 'Оплатить курс можно двумя способами:
 ЕРИП: 

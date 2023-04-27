@@ -38,7 +38,7 @@ class CourseMessageBuilder implements MessageBuilderInterface
             $chatId,
             self::MESSAGE_TEXT,
             [
-                new ButtonDto('Оплатить', 'pay'),
+                new ButtonDto('Оплатить', PayMessageBuilder::EVENT),
                 new ButtonDto('Бесплатный пробный урок', url: 'https://t.me/+bO_WDt_T-bxhY2Ji')
             ],
         );
