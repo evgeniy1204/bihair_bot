@@ -1,35 +1,34 @@
 <?php
 namespace App\Domain\BiHairBot\MessageBuilder;
 
-use App\Domain\BiHairBot\BiHairBotEvents;
 use App\Domain\BiHairBot\BiHairBotProvider;
 use App\Service\Telegram\ButtonDto;
 use App\Service\Telegram\MessageBuilderInterface;
 use App\Service\Telegram\MessageDto;
+use App\Service\Telegram\UpdateDto;
 
 class StartMessageBuilder implements MessageBuilderInterface
 {
 
-    private const EVENT = '/start';
+    public const EVENT = '/start';
 
     private const HELLO_MESSAGE_TEXT = 'Привет! 👋🏻
 Жми "Курс" и скорее переходи смотреть мой бесплатный пробный урок 💇🏻‍♀️';
 
     /**
-     * @param string $chatId
-     *
+     * @param UpdateDto $update
      * @return MessageDto[]|\Generator
      */
-    public function build(string $chatId): \Generator
+    public function build(UpdateDto $update): array|\Generator
     {
         yield new MessageDto(
-            $chatId,
+            $update->getChatId(),
             self::HELLO_MESSAGE_TEXT,
             keyboardButtons: [
-                new ButtonDto('💇‍♀️ Курс'),
-                new ButtonDto('💫 Услуги'),
-                new ButtonDto('📱 Мои соц. сети'),
-                new ButtonDto('💬 Чат для мастеров'),
+                new ButtonDto(CourseMessageBuilder::EVENT),
+                new ButtonDto(ServiceMessageBuilder::EVENT),
+                new ButtonDto(ContactsMessageBuilder::EVENT),
+                new ButtonDto(SpecialistsChatMessageBuilder::EVENT),
             ]);
     }
 

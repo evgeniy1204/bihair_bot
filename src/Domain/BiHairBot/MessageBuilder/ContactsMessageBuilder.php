@@ -1,28 +1,28 @@
 <?php
+
 namespace App\Domain\BiHairBot\MessageBuilder;
 
-use App\Domain\BiHairBot\BiHairBotEvents;
 use App\Domain\BiHairBot\BiHairBotProvider;
 use App\Service\Telegram\ButtonDto;
 use App\Service\Telegram\MessageBuilderInterface;
 use App\Service\Telegram\MessageDto;
+use App\Service\Telegram\UpdateDto;
 
 class ContactsMessageBuilder implements MessageBuilderInterface
 {
 
-    private const EVENT = '📱 Мои соц. сети';
+    public const EVENT = '📱 Мои соц. сети';
 
     private const MESSAGE_TEXT = 'Мои соц. сети:';
 
     /**
-     * @param string $chatId
-     *
+     * @param UpdateDto $update
      * @return MessageDto[]|\Generator
      */
-    public function build(string $chatId): \Generator
+    public function build(UpdateDto $update): array|\Generator
     {
         yield new MessageDto(
-            $chatId,
+            $update->getChatId(),
             self::MESSAGE_TEXT, [
             new ButtonDto('Телеграм', url: 'https://t.me/bihair_sms'),
             new ButtonDto('Instagram', url: 'https://www.instagram.com/bihair__'),

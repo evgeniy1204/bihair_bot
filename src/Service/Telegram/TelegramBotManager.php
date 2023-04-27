@@ -26,7 +26,7 @@ readonly class TelegramBotManager
             $updates = $telegramBotClient->getUpdates($lastUpdateId);
             while ($updates) {
                 foreach ($updates as $update) {
-                    $messages = $this->getMessageBuilder($update->getKey(), $bot->getName())?->build($update->getChatId());
+                    $messages = $this->getMessageBuilder($update->getKey(), $bot->getName())?->build($update);
                     if ($messages) {
                         foreach ($messages as $message) {
                             $telegramBotClient->sendMessage($message);

@@ -1,11 +1,11 @@
 <?php
 namespace App\Domain\BiHairBot\MessageBuilder;
 
-use App\Domain\BiHairBot\BiHairBotEvents;
 use App\Domain\BiHairBot\BiHairBotProvider;
 use App\Service\Telegram\ButtonDto;
 use App\Service\Telegram\MessageBuilderInterface;
 use App\Service\Telegram\MessageDto;
+use App\Service\Telegram\UpdateDto;
 
 class PayMessageBuilder implements MessageBuilderInterface
 {
@@ -22,15 +22,15 @@ NASTASSIA BILALOVA
 
 Для записи на курс отправьте скрин чека в директ
 ';
+
     /**
-     * @param string $chatId
-     *
+     * @param UpdateDto $update
      * @return MessageDto[]|\Generator
      */
-    public function build(string $chatId): \Generator
+    public function build(UpdateDto $update): array|\Generator
     {
         yield new MessageDto(
-            $chatId,
+            $update->getChatId(),
             self::MESSAGE_TEXT,
             [new ButtonDto('Директ Instagram', url: 'https://www.instagram.com/bihair__')]
         );

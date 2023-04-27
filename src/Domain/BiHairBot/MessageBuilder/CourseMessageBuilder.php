@@ -1,16 +1,16 @@
 <?php
 namespace App\Domain\BiHairBot\MessageBuilder;
 
-use App\Domain\BiHairBot\BiHairBotEvents;
 use App\Domain\BiHairBot\BiHairBotProvider;
 use App\Service\Telegram\ButtonDto;
 use App\Service\Telegram\MessageBuilderInterface;
 use App\Service\Telegram\MessageDto;
+use App\Service\Telegram\UpdateDto;
 
 class CourseMessageBuilder implements MessageBuilderInterface
 {
 
-    private const EVENT = '💇‍♀️ Курс';
+    public const EVENT = '💇‍♀️ Курс';
 
     private const MESSAGE_TEXT = 'На курсе только самая нужная и работающая, информация по уходу за волосами и кожей головы. 
 Один курс - полное понимание что делать с волосами в любой ситуации: 
@@ -27,15 +27,15 @@ class CourseMessageBuilder implements MessageBuilderInterface
 
 Всю актуальную информацию о стоимости курса можно узнать в канале с бесплатным пробным уроком. Переходи по ссылке!
 ';
+
     /**
-     * @param string $chatId
-     *
+     * @param UpdateDto $update
      * @return MessageDto[]|\Generator
      */
-    public function build(string $chatId): \Generator
+    public function build(UpdateDto $update): array|\Generator
     {
         yield new MessageDto(
-            $chatId,
+            $update->getChatId(),
             self::MESSAGE_TEXT,
             [
                 new ButtonDto('Оплатить', PayMessageBuilder::EVENT),
