@@ -13,16 +13,14 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    App\:
-        resource: '../src/'
-        exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
-            - '../src/Kernel.php'
+    App\Service\:
+        resource: '../src/Service/'
 
+    App\Controller\:
+        resource: '../src/Controller/'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    telegram:
-        class: App\Telegram
+    telegram.apiClient:
+        class: App\Service\Telegram\TelegramApiClient
         arguments:
-            - '%env(BOT_TOKEN)%default_value'
+            $token: '%env(TG_BIHAIR_BOT_TOKEN)%'

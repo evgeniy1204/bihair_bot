@@ -95,7 +95,7 @@ class TelegramApiClient
      *
      * @return UpdateDto|null
      */
-    private function processUpdate(array $result): ?UpdateDto
+    public function processUpdate(array $result): ?UpdateDto
     {
         $callbackData = null;
         if ($result['callback_query'] ?? null) {

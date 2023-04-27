@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service\Telegram;
 
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
@@ -7,34 +8,28 @@ readonly class TelegramBotManager
 {
     /**
      * @param MessageBuilderInterface[]|iterable $messageBuilders
-     * @param BotProviderInterface[]|iterable    $bots
+     * @param BotProviderInterface[]|iterable $bots
      */
     public function __construct(
-        #[TaggedIterator(tag: MessageBuilderInterface::TAG)] private iterable $messageBuilders,
+        #[TaggedIterator(tag: MessageBuilderInterface::TAG)] private iterable       $messageBuilders,
         #[TaggedIterator(tag: BotProviderInterface::BOT_PROVIDER)] private iterable $bots,
-    ) {
+    )
+    {
     }
 
     /**
      * @return void
      */
-    public function handle(): void
+    public function handle(array $update): void
     {
         foreach ($this->bots as $bot) {
             $telegramBotClient = new TelegramApiClient($bot->getToken());
-            $lastUpdateId = null;
-            $updates = $telegramBotClient->getUpdates($lastUpdateId);
-            while ($updates) {
-                foreach ($updates as $update) {
-                    $messages = $this->getMessageBuilder($update->getKey(), $bot->getName())?->build($update);
-                    if ($messages) {
-                        foreach ($messages as $message) {
-                            $telegramBotClient->sendMessage($message);
-                        }
-                    }
-                    $lastUpdateId = $update->getUpdateId();
+            $update = $telegramBotClient->processUpdate($update);
+            $messages = $this->getMessageBuilder($update->getKey(), $bot->getName())?->build($update);
+            if ($messages) {
+                foreach ($messages as $message) {
+                    $telegramBotClient->sendMessage($message);
                 }
-                $updates = $telegramBotClient->getUpdates(++$lastUpdateId);
             }
         }
     }
