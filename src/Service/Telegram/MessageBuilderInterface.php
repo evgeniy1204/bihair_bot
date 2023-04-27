@@ -14,7 +14,7 @@ interface MessageBuilderInterface
      *
      * @return MessageDto[]|\Generator
      */
-    public function build(UpdateDto $update): array|\Generator;
+    public function build(UpdateDto $update): \Generator;
 
     /**
      * @param string $type

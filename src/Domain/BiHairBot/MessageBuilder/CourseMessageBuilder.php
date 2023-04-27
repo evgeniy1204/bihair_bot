@@ -32,7 +32,7 @@ class CourseMessageBuilder implements MessageBuilderInterface
      * @param UpdateDto $update
      * @return MessageDto[]|\Generator
      */
-    public function build(UpdateDto $update): array|\Generator
+    public function build(UpdateDto $update): \Generator
     {
         yield new MessageDto(
             $update->getChatId(),
