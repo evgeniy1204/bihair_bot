@@ -29,7 +29,7 @@ class TelegramApiClient
     public function sendMessage(MessageDto $messageDto): void
     {
         try {
-            $this->client->post($this->getUri() . DIRECTORY_SEPARATOR . 'sendMessage', [
+            $this->client->post($this->getUri() . '/' . 'sendMessage', [
                 'form_params' => [
                     'chat_id' => $messageDto->getChatId(),
                     'text' => $messageDto->getText(),
@@ -52,12 +52,12 @@ class TelegramApiClient
     /**
      * @param int|null $offset
      *
-     * @return UpdateDto[]
+     * @return array|null
      */
-    public function getUpdates(?int $offset): array
+    public function getUpdates(?int $offset): ?array
     {
         try {
-            $updates = $this->client->get($this->getUri() . DIRECTORY_SEPARATOR . 'getUpdates', [
+            $updates = $this->client->get($this->getUri() . '/' . 'getUpdates', [
                 'query' => [
                     'offset' => $offset,
                     'allowed_updates' => ['message', 'callback_query'],
@@ -71,15 +71,8 @@ class TelegramApiClient
         if (!$updates['ok']) {
             return [];
         }
-        $results = $updates['result'];
-        $updatesDto = [];
-        foreach ($results as $result) {
-            if ($update = $this->processUpdate($result)) {
-                $updatesDto[] = $update;
-            }
-        }
 
-        return $updatesDto;
+        return $updates['result'] ?? null;
     }
 
     /**
@@ -95,22 +88,4 @@ class TelegramApiClient
      *
      * @return UpdateDto|null
      */
-    private function processUpdate(array $result): ?UpdateDto
-    {
-        $callbackData = null;
-        if ($result['callback_query'] ?? null) {
-            $callbackData = $result['callback_query']['data'];
-
-            return new UpdateDto($result['update_id'], $result['callback_query']['message']['chat']['id'], $callbackData);
-        }
-        $chatId = $result['message']['chat']['id'] ?? null;
-        $key = $callbackData ?? $result['message']['text'] ?? null;
-        $id = $result['update_id'] ?? null;
-
-        if ($id && $chatId && $key) {
-            return new UpdateDto($id, $chatId, $key);
-        }
-
-        return null;
-    }
 }

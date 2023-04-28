@@ -30,7 +30,7 @@ class BiHairBotHandleTelegramCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         while (true) {
-           $this->telegramBotManager->handle();
+           $this->telegramBotManager->handleGetUpdates();
            sleep(1);
         }
 
