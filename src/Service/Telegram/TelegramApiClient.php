@@ -29,7 +29,7 @@ class TelegramApiClient
     public function sendMessage(MessageDto $messageDto): void
     {
         try {
-            $this->client->post($this->getUri() . '/' . 'sendMessage', [
+            $this->client->post($this->getUri() . DIRECTORY_SEPARATOR . 'sendMessage', [
                 'form_params' => [
                     'chat_id' => $messageDto->getChatId(),
                     'text' => $messageDto->getText(),
@@ -57,7 +57,7 @@ class TelegramApiClient
     public function getUpdates(?int $offset): ?array
     {
         try {
-            $updates = $this->client->get($this->getUri() . '/' . 'getUpdates', [
+            $updates = $this->client->get($this->getUri() . DIRECTORY_SEPARATOR . 'getUpdates', [
                 'query' => [
                     'offset' => $offset,
                     'allowed_updates' => ['message', 'callback_query'],
