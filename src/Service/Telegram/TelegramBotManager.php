@@ -8,37 +8,41 @@ readonly class TelegramBotManager
 {
     /**
      * @param MessageBuilderInterface[]|iterable $messageBuilders
-     * @param BotProviderInterface[]|iterable $bots
      */
     public function __construct(
         #[TaggedIterator(tag: MessageBuilderInterface::TAG)] private iterable $messageBuilders,
-        #[TaggedIterator(tag: BotProviderInterface::BOT_PROVIDER)] private iterable $bots,
-    ) {
+    )
+    {
     }
 
     /**
+     * @param BotProviderInterface $bot
      * @return void
      */
-    public function handleGetUpdates(): void
+    public function handleGetUpdates(BotProviderInterface $bot): void
     {
-        foreach ($this->bots as $bot) {
-            $telegramBotClient = new TelegramApiClient($bot->getToken());
-            $lastUpdateId = null;
-            $updates = $telegramBotClient->getUpdates($lastUpdateId);
-            while ($updates) {
-                foreach ($updates as $update) {
-                    if ($updateDto = $this->createUpdate($update)) {
-                        $this->processUpdate($updateDto, $bot, $telegramBotClient);
-                        $lastUpdateId = $updateDto->getUpdateId();
-                    };
-                }
-                $updates = $telegramBotClient->getUpdates(++$lastUpdateId);
+        $telegramBotClient = new TelegramApiClient($bot->getToken());
+        $lastUpdateId = null;
+        $updates = $telegramBotClient->getUpdates($lastUpdateId);
+        while ($updates) {
+            foreach ($updates as $update) {
+                if ($updateDto = $this->createUpdate($update)) {
+                    $this->processUpdate($updateDto, $bot);
+                    $lastUpdateId = $updateDto->getUpdateId();
+                };
             }
+            $updates = $telegramBotClient->getUpdates(++$lastUpdateId);
         }
     }
 
-    public function processUpdate(UpdateDto$update, BotProviderInterface $bot, TelegramApiClient $telegramBotClient): void
+    /**
+     * @param UpdateDto $update
+     * @param BotProviderInterface $bot
+     * @return void
+     */
+    public function processUpdate(UpdateDto $update, BotProviderInterface $bot): void
     {
+        $telegramBotClient = new TelegramApiClient($bot->getToken());
         $messages = $this->getMessageBuilder($update->getKey(), $bot->getName())?->build($update);
 
         if ($messages) {
@@ -48,7 +52,11 @@ readonly class TelegramBotManager
         }
     }
 
-    private function createUpdate(array $result): ?UpdateDto
+    /**
+     * @param array $result
+     * @return UpdateDto|null
+     */
+    public function createUpdate(array $result): ?UpdateDto
     {
         $callbackData = null;
         if ($result['callback_query'] ?? null) {

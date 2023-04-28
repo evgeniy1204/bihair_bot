@@ -2,7 +2,6 @@
 namespace App\Service\Telegram;
 
 use GuzzleHttp\Client;
-use LogicException;
 
 class TelegramApiClient
 {
@@ -82,10 +81,4 @@ class TelegramApiClient
     {
         return sprintf('%s%s', self::TELEGRAM_HOST, $this->token);
     }
-
-    /**
-     * @param array $result
-     *
-     * @return UpdateDto|null
-     */
 }
