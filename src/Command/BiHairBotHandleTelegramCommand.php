@@ -1,6 +1,7 @@
 <?php
 namespace App\Command;
 
+use App\Domain\BiHairBot\BiHairBotProvider;
 use App\Service\Telegram\TelegramBotManager;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -15,7 +16,7 @@ class BiHairBotHandleTelegramCommand extends Command
     /**
      * @param TelegramBotManager $telegramBotManager
      */
-    public function __construct(private readonly TelegramBotManager $telegramBotManager)
+    public function __construct(private readonly TelegramBotManager $telegramBotManager, private readonly BiHairBotProvider $bot)
     {
         parent::__construct();
     }
@@ -30,7 +31,7 @@ class BiHairBotHandleTelegramCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         while (true) {
-           $this->telegramBotManager->handleGetUpdates();
+           $this->telegramBotManager->handleGetUpdates($this->bot);
            sleep(1);
         }
 
