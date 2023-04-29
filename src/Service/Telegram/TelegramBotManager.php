@@ -11,8 +11,7 @@ readonly class TelegramBotManager
      */
     public function __construct(
         #[TaggedIterator(tag: MessageBuilderInterface::TAG)] private iterable $messageBuilders,
-    )
-    {
+    ) {
     }
 
     /**
@@ -29,7 +28,7 @@ readonly class TelegramBotManager
                 if ($updateDto = $this->createUpdate($update)) {
                     $this->processUpdate($updateDto, $bot);
                     $lastUpdateId = $updateDto->getUpdateId();
-                };
+                }
             }
             $updates = $telegramBotClient->getUpdates(++$lastUpdateId);
         }

@@ -1,7 +1,7 @@
 <?php
-namespace App\Domain\BiHairBot\MessageBuilder;
+namespace App\Domain\Telegram\BiHairBot\MessageBuilder;
 
-use App\Domain\BiHairBot\BiHairBotProvider;
+use App\Domain\Telegram\BiHairBot\BiHairBotProvider;
 use App\Service\Telegram\ButtonDto;
 use App\Service\Telegram\MessageBuilderInterface;
 use App\Service\Telegram\MessageDto;

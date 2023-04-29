@@ -1,5 +1,5 @@
 <?php
-namespace App\Domain\BiHairBot;
+namespace App\Domain\Telegram\BiHairBot;
 
 use App\Service\Telegram\BotProviderInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;

@@ -1,19 +1,17 @@
 <?php
+namespace App\Domain\Telegram\BiHairBot\MessageBuilder;
 
-namespace App\Domain\BiHairBot\MessageBuilder;
-
-use App\Domain\BiHairBot\BiHairBotProvider;
+use App\Domain\Telegram\BiHairBot\BiHairBotProvider;
 use App\Service\Telegram\ButtonDto;
 use App\Service\Telegram\MessageBuilderInterface;
 use App\Service\Telegram\MessageDto;
 use App\Service\Telegram\UpdateDto;
 
-class ContactsMessageBuilder implements MessageBuilderInterface
+class SpecialistsChatMessageBuilder implements MessageBuilderInterface
 {
+    public const EVENT = '💬 Чат для мастеров';
 
-    public const EVENT = '📱 Мои соц. сети';
-
-    private const MESSAGE_TEXT = 'Мои соц. сети:';
+    private const MESSAGE_TEXT = 'Наш чат:';
 
     /**
      * @param UpdateDto $update
@@ -23,11 +21,9 @@ class ContactsMessageBuilder implements MessageBuilderInterface
     {
         yield new MessageDto(
             $update->getChatId(),
-            self::MESSAGE_TEXT, [
-            new ButtonDto('Телеграм', url: 'https://t.me/bihair_sms'),
-            new ButtonDto('Instagram', url: 'https://www.instagram.com/bihair__'),
-            new ButtonDto('TikTok', url: 'https://www.tiktok.com/@bihair__'),
-        ]);
+            self::MESSAGE_TEXT,
+            [new ButtonDto('Курим, парим и хуярим', url: 'https://t.me/+0_uO4FSSSp8zZWVi')]
+        );
     }
 
     /**

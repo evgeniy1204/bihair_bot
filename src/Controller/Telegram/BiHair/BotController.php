@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\BiHair;
+namespace App\Controller\Telegram\BiHair;
 
-use App\Domain\BiHairBot\BiHairBotProvider;
+use App\Domain\Telegram\BiHairBot\BiHairBotProvider;
 use App\Service\Telegram\TelegramBotManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,23 +12,12 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/bihair')]
 class BotController extends AbstractController
 {
-    /**
-     * @param TelegramBotManager $telegramBotManager
-     */
-    public function __construct(
-        private readonly TelegramBotManager $telegramBotManager
-    )
-    {
-    }
-
-    /**
-     * @param Request $request
-     * @param BiHairBotProvider $bot
-     * @return Response
-     */
-    #[Route('/process-update', methods: ['POST'])]
-    public function processUpdate(Request $request, BiHairBotProvider $bot) : Response
-    {
+    #[Route('/process-update', methods: [Request::METHOD_POST])]
+    public function processUpdate(
+        Request $request,
+        BiHairBotProvider $bot,
+        TelegramBotManager $telegramBotManager
+    ) : Response {
         if (!$response = $request->getContent()) {
             return new Response('Bad Request', 403);
         }
@@ -38,8 +27,9 @@ class BotController extends AbstractController
             return new Response('Bad Request', 403);
         }
 
-        $updateDto = $this->telegramBotManager->createUpdate($update);
-        $this->telegramBotManager->processUpdate($updateDto, $bot);
+        if ($updateDto = $telegramBotManager->createUpdate($update)) {
+            $telegramBotManager->processUpdate($updateDto, $bot);
+        }
 
         return new Response('OK', 200);
     }
