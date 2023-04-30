@@ -19,18 +19,18 @@ class BotController extends AbstractController
         TelegramBotManager $telegramBotManager
     ) : Response {
         if (!$response = $request->getContent()) {
-            return new Response('Bad Request', 403);
+            return new Response('Bad Request', Response::HTTP_BAD_REQUEST);
         }
 
         $update = json_decode($response, true);
         if (json_last_error() === JSON_THROW_ON_ERROR) {
-            return new Response('Bad Request', 403);
+            return new Response('Bad Request', Response::HTTP_BAD_REQUEST);
         }
 
         if ($updateDto = $telegramBotManager->createUpdate($update)) {
             $telegramBotManager->processUpdate($updateDto, $bot);
         }
 
-        return new Response('OK', 200);
+        return new Response('OK', Response::HTTP_OK);
     }
 }
